@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://tilesets/grid_lines/grid_lines_tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Blocks/OBlock.tscn" type="PackedScene" id=2]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 32, 352 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 32, 352 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 128, 32 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 128, 32 )
+
+[node name="GridSystem" type="Node2D"]
+
+[node name="GridLines" type="TileMap" parent="."]
+z_index = -1
+z_as_relative = false
+tile_set = ExtResource( 1 )
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+format = 1
+tile_data = PoolIntArray( 6, 1, 0, 7, 1, 0, 8, 1, 0, 9, 1, 0, 10, 1, 0, 11, 1, 0, 65542, 1, 0, 65543, 0, 0, 65544, 0, 0, 65545, 0, 0, 65546, 0, 0, 65547, 1, 0, 131078, 1, 0, 131079, 0, 0, 131080, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 1, 0, 196614, 1, 0, 196615, 0, 0, 196616, 0, 0, 196617, 0, 0, 196618, 0, 0, 196619, 1, 0, 262150, 1, 0, 262151, 0, 0, 262152, 0, 0, 262153, 0, 0, 262154, 0, 0, 262155, 1, 0, 327686, 1, 0, 327687, 0, 0, 327688, 0, 0, 327689, 0, 0, 327690, 0, 0, 327691, 1, 0, 393222, 1, 0, 393223, 0, 0, 393224, 0, 0, 393225, 0, 0, 393226, 0, 0, 393227, 1, 0, 458758, 1, 0, 458759, 0, 0, 458760, 0, 0, 458761, 0, 0, 458762, 0, 0, 458763, 1, 0, 524294, 1, 0, 524295, 0, 0, 524296, 0, 0, 524297, 0, 0, 524298, 0, 0, 524299, 1, 0, 589830, 1, 0, 589831, 0, 0, 589832, 0, 0, 589833, 0, 0, 589834, 0, 0, 589835, 1, 0, 655366, 1, 0, 655367, 1, 0, 655368, 1, 0, 655369, 1, 0, 655370, 1, 0, 655371, 1, 0 )
+
+[node name="CollisionBoundaries" type="Node2D" parent="GridLines"]
+
+[node name="LeftArea2D" type="Area2D" parent="GridLines/CollisionBoundaries" groups=[
+"Outer",
+]]
+position = Vector2( 416, 32 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GridLines/CollisionBoundaries/LeftArea2D"]
+position = Vector2( 0, 320 )
+shape = SubResource( 4 )
+
+[node name="RightArea2D" type="Area2D" parent="GridLines/CollisionBoundaries" groups=[
+"Outer",
+]]
+position = Vector2( 736, 32 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GridLines/CollisionBoundaries/RightArea2D"]
+position = Vector2( 0, 320 )
+shape = SubResource( 3 )
+
+[node name="TopArea2D" type="Area2D" parent="GridLines/CollisionBoundaries" groups=[
+"Outer",
+]]
+position = Vector2( 544, 32 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GridLines/CollisionBoundaries/TopArea2D"]
+position = Vector2( 32, 0 )
+shape = SubResource( 2 )
+
+[node name="BtmArea2D" type="Area2D" parent="GridLines/CollisionBoundaries" groups=[
+"Outer",
+]]
+position = Vector2( 544, 32 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GridLines/CollisionBoundaries/BtmArea2D"]
+position = Vector2( 32, 640 )
+shape = SubResource( 5 )
+
+[node name="OBlock" parent="." instance=ExtResource( 2 )]
+position = Vector2( 128, 128 )
+
+[node name="OBlock2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 128, 320 )
