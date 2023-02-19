@@ -23,12 +23,22 @@ func setDragState():
 	z_index = 1 if dragging else 0 # render the dragged block on top of the other blocks
 
 
+# to drag
 func _on_Area2D_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			emit_signal("onDragOrDrop")
-		elif event.button_index == BUTTON_LEFT and !event.pressed:
+
+
+# to drop
+func _unhandled_input(event : InputEvent) -> void:
+	if event is InputEventMouseButton and not event.is_pressed():
+		if event.button_index == BUTTON_LEFT and dragging:
 			emit_signal("onDragOrDrop")
+	elif event is InputEventKey and event.is_pressed():
+		if event.scancode == KEY_SPACE and dragging:
+			rotate(PI/2)
+
 
 # when this happens, it means that something is in the way of the block	 
 func _on_Area2D_area_entered(area : Area2D):
