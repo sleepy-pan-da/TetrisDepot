@@ -8,11 +8,25 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Area2D",
+"class": "DragAndDrop",
+"language": "GDScript",
+"path": "res://Blocks/DragAndDrop.gd"
+} ]
+_global_script_class_icons={
+"DragAndDrop": ""
+}
+
 [application]
 
 config/name="Tetris Depot"
-run/main_scene="res://Game.tscn"
+run/main_scene="res://Game/Game.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+EventManager="*res://Singletons/EventManager.gd"
 
 [debug]
 
@@ -20,8 +34,10 @@ gdscript/warnings/return_value_discarded=false
 
 [display]
 
-window/size/width=1280
-window/size/height=720
+window/size/width=1440
+window/size/height=810
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [rendering]
 
