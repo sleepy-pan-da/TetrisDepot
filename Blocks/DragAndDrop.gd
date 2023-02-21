@@ -1,4 +1,4 @@
-class_name DragAndDrop extends Area2D
+extends Area2D
 
 
 export(Color, RGB) var origColour
