@@ -11,6 +11,7 @@ extents = Vector2( 62, 62 )
 ]]
 script = ExtResource( 2 )
 origColour = Color( 1, 1, 1, 1 )
+blockName = "OBlock"
 
 [node name="Sprite" parent="." instance=ExtResource( 1 )]
 position = Vector2( -32, -32 )

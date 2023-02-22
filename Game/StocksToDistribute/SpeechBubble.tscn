@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/SpeechBubble.png" type="Texture" id=1]
 [ext_resource path="res://Game/StocksToDistribute/BlockIcons/BlockIcon.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game/StocksToDistribute/SpeechBubble.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 206.947, 67.253 )
 
 [node name="SpeechBubble" type="NinePatchRect"]
 margin_right = 416.0
@@ -11,9 +15,11 @@ patch_margin_left = 74
 patch_margin_top = 74
 patch_margin_right = 74
 patch_margin_bottom = 74
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+blockIcon = ExtResource( 2 )
 
 [node name="GridContainer" type="GridContainer" parent="."]
 margin_left = 22.0
@@ -27,21 +33,34 @@ __meta__ = {
 }
 
 [node name="BlockIcon" parent="GridContainer" instance=ExtResource( 2 )]
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 0.0
 margin_top = 0.0
-margin_right = 170.0
+margin_right = 164.0
 margin_bottom = 38.0
 
 [node name="BlockIcon2" parent="GridContainer" instance=ExtResource( 2 )]
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 190.0
+margin_left = 0.0
 margin_top = 0.0
-margin_right = 360.0
+margin_right = 164.0
 margin_bottom = 38.0
+
+[node name="Area2D" type="Area2D" parent="." groups=[
+"SpeechBubble",
+]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 207.338, 67.3297 )
+shape = SubResource( 1 )
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]

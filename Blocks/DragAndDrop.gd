@@ -1,11 +1,13 @@
 extends Area2D
 
 
-export(Color, RGB) var origColour
-export(Color, RGB) var disabledColour
+export(Color, RGB) var origColour : Color
+export(Color, RGB) var disabledColour : Color
+export(String) var blockName : String
 var dragging : bool = false
 var numOfOverlappingIllegalAreas : int = 0
 var isInGridArea : bool = false
+var isInSpeechBubble : bool = false
 var prevPos : Vector2
 var prevRotationInDegrees : int
 var refToHeldStocks : Node
@@ -14,6 +16,7 @@ signal onDragOrDrop
 
 func _ready() -> void:
 	connect("onDragOrDrop", self, "setDragState")
+	EventManager.connect("updatedSpeechBubble", self, "updateBlockStatus")
 	prevPos = global_position
 	prevRotationInDegrees = 0
 
@@ -41,11 +44,15 @@ func _unhandled_input(event : InputEvent) -> void:
 	if event is InputEventMouseButton and not event.is_pressed():
 		if event.button_index == BUTTON_LEFT and dragging:
 			emit_signal("onDragOrDrop")
-			if numOfOverlappingIllegalAreas > 0 or not isInGridArea: reset()
-			else: # successfully dropped block
+			if isInGridArea and numOfOverlappingIllegalAreas == 0: # successfully dropped block
 				prevPos = global_position
 				prevRotationInDegrees =  int(rotation_degrees) % 360
 				reparentIfNeeded()
+			elif isInSpeechBubble:
+				EventManager.emit_signal("droppedBlockIntoSpeechBubble", blockName)
+			else:
+				print("resetted")
+				reset()
 	elif event is InputEventKey and event.is_pressed():
 		if event.scancode == KEY_SPACE and dragging:
 			rotate(PI/2)
@@ -58,6 +65,8 @@ func _on_Area2D_area_entered(area : Area2D):
 		if dragging: modulate = disabledColour
 	elif area.is_in_group("Inner"):
 		isInGridArea = true
+	elif area.is_in_group("SpeechBubble"):
+		isInSpeechBubble = true
 
 
 func _on_Area2D_area_exited(area : Area2D):
@@ -66,6 +75,17 @@ func _on_Area2D_area_exited(area : Area2D):
 		if numOfOverlappingIllegalAreas == 0: modulate = origColour
 	elif area.is_in_group("Inner"):
 		isInGridArea = false
+	elif area.is_in_group("SpeechBubble"):
+		isInSpeechBubble = false
+
+
+func updateBlockStatus(updatedSpeechBubbleStatus : bool):
+	if not isInSpeechBubble: return
+	if updatedSpeechBubbleStatus:
+		refToHeldStocks.remove_child(self)
+		queue_free()
+	else:
+		reset()
 
 
 func reset():
@@ -74,6 +94,7 @@ func reset():
 	toggleMonitoringAndMonitorable(true)	
 	numOfOverlappingIllegalAreas = 0
 	isInGridArea = false
+	isInSpeechBubble = false
 	modulate = origColour
 
 

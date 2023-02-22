@@ -9,9 +9,9 @@
 [node name="GridSystem" parent="." instance=ExtResource( 1 )]
 position = Vector2( 512, 64 )
 
-[node name="StocksToTake" parent="." instance=ExtResource( 2 )]
-
 [node name="HeldStocks" type="Node2D" parent="."]
+
+[node name="StocksToTake" parent="." instance=ExtResource( 2 )]
 
 [node name="StocksToDistribute" parent="." instance=ExtResource( 3 )]
 position = Vector2( 992, 0 )
