@@ -26,9 +26,7 @@ func updatePool(updatedSpeechBubbleSuccessfully : bool, blockName : String) -> v
 
 
 func replenishSpeechBubbles() -> void:
-	print("replenished")
 	for child in get_children():
-		print(child.get_child_count())
 		if child is Position2D and child.get_child_count() == 0:
 			generateSpeechBubble(child)
 
