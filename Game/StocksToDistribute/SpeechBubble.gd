@@ -9,9 +9,6 @@ var hasOverlappingBlock : bool = false
 
 func _ready():
 	EventManager.connect("droppedBlockIntoSpeechBubble", self, "updateSpeechBubble")
-	# generateBlockIcon("IBlock", 2)
-	# generateBlockIcon("LBlock", 1)
-	# print(blockMap)
 
 
 # Each blockIcon in speechbubble is unique for this to work
@@ -38,7 +35,7 @@ func updateSpeechBubble(droppedBlockName) -> void:
 	# check if dropped block is in blockMap
 	if not (droppedBlockName in blockMap):
 		print("dropped {str} not in blockMap".format({"str": droppedBlockName}))
-		EventManager.emit_signal("updatedSpeechBubble", false)
+		EventManager.emit_signal("updatedSpeechBubble", false, null)
 		return
 	
 	# update the respective blockIcon
@@ -47,12 +44,11 @@ func updateSpeechBubble(droppedBlockName) -> void:
 	if newQty <= 0:
 		blockMap[droppedBlockName][1].queue_free()
 		blockMap.erase(droppedBlockName)
-		if blockMap.size() == 0:
-			queue_free()
-			# TODO: update StocksToDistribute to spawn another speechBubble
 	else:
 		blockMap[droppedBlockName][1].updateQtyLabel(newQty)
-	EventManager.emit_signal("updatedSpeechBubble", true)
+	
+	EventManager.emit_signal("updatedSpeechBubble", true, droppedBlockName)
+	if blockMap.size() == 0: queue_free()
 
 
 func _on_Area2D_area_entered(area : Area2D):
@@ -63,3 +59,8 @@ func _on_Area2D_area_entered(area : Area2D):
 func _on_Area2D_area_exited(area : Area2D):
 	if area.is_in_group("Block"):
 		hasOverlappingBlock = false
+
+
+func _on_SpeechBubble_tree_exited():
+	# update StocksToDistribute to spawn another speechBubble
+	EventManager.emit_signal("finishedSpeechBubble")

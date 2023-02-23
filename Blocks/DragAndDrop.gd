@@ -17,6 +17,8 @@ signal onDragOrDrop
 func _ready() -> void:
 	connect("onDragOrDrop", self, "setDragState")
 	EventManager.connect("updatedSpeechBubble", self, "updateBlockStatus")
+	EventManager.connect("updatedAnyStockSpeechBubble", self, "deleteBlock")
+
 	prevPos = global_position
 	prevRotationInDegrees = 0
 
@@ -79,13 +81,17 @@ func _on_Area2D_area_exited(area : Area2D):
 		isInSpeechBubble = false
 
 
-func updateBlockStatus(updatedSpeechBubbleStatus : bool):
+func updateBlockStatus(updatedSpeechBubbleStatus : bool, _blockName : String):
 	if not isInSpeechBubble: return
 	if updatedSpeechBubbleStatus:
-		refToHeldStocks.remove_child(self)
-		queue_free()
+		deleteBlock()
 	else:
 		reset()
+
+
+func deleteBlock() -> void:
+	if not isInSpeechBubble: return
+	queue_free()
 
 
 func reset():

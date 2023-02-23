@@ -15,41 +15,25 @@ var pool = {
 
 func _ready() -> void:
 	EventManager.connect("updatedSpeechBubble", self, "updatePool")
-	initPool()
+	EventManager.connect("finishedSpeechBubble", self, "replenishSpeechBubbles")
 	replenishSpeechBubbles()
-	EventManager.emit_signal("readyStocksToDistribute")
 
 
-func updatePool(updatedSpeechBubbleSuccessfully : bool) -> void:
+func updatePool(updatedSpeechBubbleSuccessfully : bool, blockName : String) -> void:
 	if not updatedSpeechBubbleSuccessfully: return
-	
-	print("hi")
-	# find a stockType that is 0
-	for key in pool:
-		if pool[key] == 0:
-			pool[key] += 1
-			print(pool)
-			return
-	var blockTypes = pool.keys()
-	var key : String = blockTypes[randi()%len(blockTypes)]
-	pool[key] += 1
-	print(pool)
-
-
-
-func initPool() -> void:
-	randomize()
-	for key in pool:
-		pool[key] = 3 #randi()%3 + 1 
-	print(pool)
+	pool[blockName] = max(0, pool[blockName]-1)
+	print("updated stocksToDistributePool {str}".format({"str":pool}))
 
 
 func replenishSpeechBubbles() -> void:
+	print("replenished")
 	for child in get_children():
+		print(child.get_child_count())
 		if child is Position2D and child.get_child_count() == 0:
 			generateSpeechBubble(child)
 
 
+# generated speechbubble's blocktypes are unique among speechbubbles
 func generateSpeechBubble(parentNode : Node) -> void:
 	var newSpeechBubble : Node = speechBubble.instance()
 	if not newSpeechBubble.has_method("generateBlockIcon"):
@@ -62,8 +46,7 @@ func generateSpeechBubble(parentNode : Node) -> void:
 	for key in dic:
 		newSpeechBubble.generateBlockIcon(key, dic[key])
 		# update the pool
-		pool[key] -= dic[key]
-		EventManager.emit_signal("subtractedFromStocksToDistributePool", key, dic[key])
+		pool[key] += dic[key]
 
 
 # Returns dictionary of blockType(key) and count(val)
@@ -74,10 +57,10 @@ func returnRandomBlockAndCountFromPool(numOfUniqueBlocks : int) -> Dictionary:
 	while res.size() < numOfUniqueBlocks:
 		var blockTypes = pool.keys()
 		var blockType : String = blockTypes[randi() % blockTypes.size()]
-		while pool[blockType] <= 1:
+		# we want unique blocktypes from the pool
+		while pool[blockType] > 0 or blockType in res:
 			blockType = blockTypes[randi() % blockTypes.size()]
 		
-		if blockType in res: continue
-		var count = max(2, randi()%pool[blockType] + 1)
+		var count : int = randi()%2+1 
 		res[blockType] = count
 	return res

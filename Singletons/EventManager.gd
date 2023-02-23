@@ -13,14 +13,17 @@ extends Node
 # connected from DragAndDrop.gd to StocksToTake.gd
 signal tookStock() 
 
-# connected from SpeechBubble.gd to DragAndDrop.gd
+# connected from DragAndDrop.gd to SpeechBubble.gd and AnyStock.gd
 signal droppedBlockIntoSpeechBubble(blockName) 
 
 # connected from SpeechBubble.gd to DragAndDrop.gd
 # connected from SpeechBubble.gd to StocksToDistribute.gd
 # status -> boolean to indicate whether block is dropped successfully
-signal updatedSpeechBubble(status)
+# blockName -> the block that updated the speechbubble
+signal updatedSpeechBubble(status, blockName)
 
-# connected from StocksToDistribute.gd to StocksToTake.gd
-signal subtractedFromStocksToDistributePool(blockType, amountSubtracted)
-signal readyStocksToDistribute()
+# connected from AnyStock.gd to DragAndDrop.gd
+signal updatedAnyStockSpeechBubble()
+
+# connected from SpeechBubble.gd to StocksToDistribute.gd
+signal finishedSpeechBubble()
