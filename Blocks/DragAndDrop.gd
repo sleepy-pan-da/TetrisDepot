@@ -1,6 +1,5 @@
 extends Area2D
 
-
 export(Color, RGB) var origColour : Color
 export(Color, RGB) var disabledColour : Color
 export(String) var blockName : String
