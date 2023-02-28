@@ -13,6 +13,8 @@ extends Node
 # connected from DragAndDrop.gd to StocksToTake.gd
 signal tookStock() 
 
+
+# TO BE CANCELLED
 # connected from DragAndDrop.gd to SpeechBubble.gd and AnyStock.gd
 signal droppedBlockIntoSpeechBubble(blockName) 
 

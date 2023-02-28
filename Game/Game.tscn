@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Game/GridSystem/GridSystem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/StocksToTake/StocksToTake.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Game/StocksToDistribute/StocksToDistribute.tscn" type="PackedScene" id=3]
 
 [node name="Game" type="Node2D"]
 
@@ -12,6 +11,3 @@ position = Vector2( 448, 0 )
 [node name="HeldStocks" type="Node2D" parent="."]
 
 [node name="StocksToTake" parent="." instance=ExtResource( 2 )]
-
-[node name="StocksToDistribute" parent="." instance=ExtResource( 3 )]
-position = Vector2( 992, 0 )
