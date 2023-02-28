@@ -13,6 +13,17 @@ func _unhandled_input(event) -> void:
 		else:
 			dragging = false
 			updateStatus(dragStart, stepifyPos(event.position), dragging)
+			
+			var selectRect = RectangleShape2D.new()
+			selectRect.extents = (dragEnd-dragStart)/2
+			var space = get_world_2d().direct_space_state
+			var query = Physics2DShapeQueryParameters.new()
+			query.collide_with_areas = true
+			query.set_shape(selectRect)
+			query.transform = Transform2D(0, (dragEnd+dragStart)/2)
+			var selectedBlocks = space.intersect_shape(query)
+			print(selectedBlocks)
+
 	if dragging:
 		if event is InputEventMouseMotion:
 			updateStatus(dragStart, stepifyPos(event.position), dragging)
