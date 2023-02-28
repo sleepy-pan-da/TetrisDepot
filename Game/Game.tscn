@@ -7,7 +7,7 @@
 [node name="Game" type="Node2D"]
 
 [node name="GridSystem" parent="." instance=ExtResource( 1 )]
-position = Vector2( 512, 64 )
+position = Vector2( 448, 0 )
 
 [node name="HeldStocks" type="Node2D" parent="."]
 
