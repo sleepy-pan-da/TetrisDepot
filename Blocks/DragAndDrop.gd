@@ -56,7 +56,9 @@ func _unhandled_input(event : InputEvent) -> void:
 				reset()
 	elif event is InputEventKey and event.is_pressed():
 		if event.scancode == KEY_SPACE and dragging:
-			rotate(PI/2)
+			# rotate(PI/2)
+			rotate(deg2rad(90))
+
 
 
 # when this happens, it means that something is in the way of the block	 
@@ -127,3 +129,11 @@ func reparentIfNeeded():
 		refToHeldStocks.add_child(self)
 		self.global_position = tempGlobalPosition
 		EventManager.emit_signal("tookStock")
+
+
+func returnGlobalCoordsOfEachBox():
+	var res = []
+	for child in get_children():
+		if child is Sprite:
+			res.append(Vector2(round(child.global_position.x), round(child.global_position.y)))
+	return res
