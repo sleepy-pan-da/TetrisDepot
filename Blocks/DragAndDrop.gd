@@ -135,5 +135,6 @@ func returnGlobalCoordsOfEachBox():
 	var res = []
 	for child in get_children():
 		if child is Sprite:
+			# when rotated, the components of global_position might be floats instead of ints
 			res.append(Vector2(round(child.global_position.x), round(child.global_position.y)))
 	return res
