@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/OlivineBlock.png-792c52181998239a2dedd5f701d0f179.stex"
+path="res://.import/TestBlock1111.png-2a58630cb093ad6f65496b53cb95b329.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/grid/OlivineBlock.png"
-dest_files=[ "res://.import/OlivineBlock.png-792c52181998239a2dedd5f701d0f179.stex" ]
+source_file="res://tilesets/grid/TestBlocks/TestBlock1111.png"
+dest_files=[ "res://.import/TestBlock1111.png-2a58630cb093ad6f65496b53cb95b329.stex" ]
 
 [params]
 

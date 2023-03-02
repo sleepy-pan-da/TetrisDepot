@@ -29,3 +29,5 @@ polygon = PoolVector2Array( -5.83331, -5.33334, -187.333, -5.66666, -187.333, -5
 [connection signal="area_entered" from="." to="." method="_on_Area2D_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Area2D_area_exited"]
 [connection signal="input_event" from="." to="." method="_on_Area2D_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

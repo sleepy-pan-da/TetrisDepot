@@ -29,6 +29,7 @@ func _process(_delta):
 
 
 func setDragState():
+	changeAlpha(1)
 	dragging = !dragging
 	z_index = 1 if dragging else 0 # render the dragged block on top of the other blocks
 
@@ -38,6 +39,18 @@ func _on_Area2D_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			emit_signal("onDragOrDrop")
+
+
+func _on_mouse_entered() -> void:
+	if not dragging: changeAlpha(0.3)
+
+
+func _on_mouse_exited() -> void:
+	changeAlpha(1)
+
+
+func changeAlpha(newAlpha : float) -> void:
+	modulate.a = newAlpha
 
 
 # to drop
@@ -57,8 +70,9 @@ func _unhandled_input(event : InputEvent) -> void:
 	elif event is InputEventKey and event.is_pressed():
 		if event.scancode == KEY_SPACE and dragging:
 			# rotate(PI/2)
-			rotate(deg2rad(90))
-
+			# rotate(deg2rad(90))
+			rotation_degrees += 90
+			rotation_degrees = int(rotation_degrees) % 360 # need to see if this fixes the float bug in rotation
 
 
 # when this happens, it means that something is in the way of the block	 
@@ -112,7 +126,7 @@ func toggleMonitoringAndMonitorable(toggleState : bool):
 
 func returnToPrevPositionAndRotation():
 	global_position = prevPos
-	global_rotation_degrees = prevRotationInDegrees
+	rotation_degrees = prevRotationInDegrees
 
 
 func setRefToHeldStocks(ref : Node):
