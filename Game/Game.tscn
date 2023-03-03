@@ -1,10 +1,110 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Game/GridSystem/GridSystem.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/StocksToTake/StocksToTake.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Game/SelectDraw.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Fonts/press_start/prstartk.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Game/StatisticsManager/Time.gd" type="Script" id=5]
+[ext_resource path="res://Game/StatisticsManager/StatisticsManager.gd" type="Script" id=6]
+[ext_resource path="res://Game/StatisticsManager/Score.gd" type="Script" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 4 )
 
 [node name="Game" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -2
+
+[node name="Background" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 1440, 810 )
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.00784314, 0.188235, 0.278431, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Statistics" type="Control" parent="CanvasLayer2"]
+margin_left = 1031.0
+margin_top = 30.3254
+margin_right = 1425.0
+margin_bottom = 94.3254
+mouse_filter = 2
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer2/Statistics"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time" type="Label" parent="CanvasLayer2/Statistics/VBoxContainer"]
+margin_right = 394.0
+margin_bottom = 24.0
+custom_fonts/font = SubResource( 1 )
+text = "TIME LEFT: 999s"
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="CanvasLayer2/Statistics/VBoxContainer/Time"]
+one_shot = true
+
+[node name="Score" type="Label" parent="CanvasLayer2/Statistics/VBoxContainer"]
+margin_top = 28.0
+margin_right = 394.0
+margin_bottom = 52.0
+custom_fonts/font = SubResource( 1 )
+text = "SCORE: 99999999"
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Instructions" type="Control" parent="CanvasLayer2"]
+margin_left = 1031.0
+margin_top = 632.0
+margin_right = 1416.0
+margin_bottom = 777.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time" type="Label" parent="CanvasLayer2/Instructions"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 380, 0 )
+custom_fonts/font = SubResource( 2 )
+text = "LEFT CLICK & DRAG: MOVE BLOCK
+
+SPACE: ROTATE BLOCK
+
+RIGHT CLICK & DRAG: CLEAR BLOCKS"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="GridSystem" parent="." instance=ExtResource( 1 )]
 position = Vector2( 448, 0 )
@@ -16,3 +116,5 @@ position = Vector2( 448, 0 )
 [node name="SelectDraw" type="Node2D" parent="."]
 z_index = 1
 script = ExtResource( 3 )
+
+[connection signal="timeout" from="CanvasLayer2/Statistics/VBoxContainer/Time/Timer" to="CanvasLayer2/Statistics/VBoxContainer/Time" method="_on_Timer_timeout"]

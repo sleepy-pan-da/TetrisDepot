@@ -115,5 +115,36 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 
 func deleteBlocks() -> void:
 	# delete the blocks enclosed in the drawn rect
+	
+	computeScoreAndTimeEarned()
+
 	for blk in mapOfSelectedBlocks.values():
 		blk.queue_free()
+
+
+func computeScoreAndTimeEarned() -> void:
+	var scoreEarned : int = 0
+	var timeIncremented : int = computeTimeIncremented(len(mapOfSelectedBlocks.values()))
+	scoreEarned += computeScoreForNumberOfBlocksRemovedAtOneGo(len(mapOfSelectedBlocks.values()))
+	# get number of unique block types to compute score
+	var blockTypes = {}
+	for blk in mapOfSelectedBlocks.values():
+		if not blk.blockName in blockTypes:
+			blockTypes[blk.blockName] = null
+	scoreEarned += computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(blockTypes.size())
+	
+	print("scoreEarned:{i}, timeIncremented:{j}".format(({"i":scoreEarned, "j":timeIncremented})))
+	EventManager.emit_signal("computedTimeEarnedFromDeletingBlocks", timeIncremented)
+	EventManager.emit_signal("computedScoreEarnedFromDeletingBlocks", scoreEarned)
+
+
+func computeScoreForNumberOfBlocksRemovedAtOneGo(numberOfBlocks : int) -> int:
+	return int(pow(2, numberOfBlocks-1))
+
+
+func computeTimeIncremented(numberOfBlocks : int) -> int:
+	return numberOfBlocks-1
+
+
+func computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(numberOfBlockTypes : int) -> int:
+	return int(pow(5, numberOfBlockTypes-1))

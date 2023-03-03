@@ -13,6 +13,11 @@ extends Node
 # connected from DragAndDrop.gd to StocksToTake.gd
 signal tookStock() 
 
+# connected from SelectDraw.gd to Time.gd
+signal computedTimeEarnedFromDeletingBlocks(timeEarned)
+
+# connected from SelectDraw.gd to StatisticsManager.gd
+signal computedScoreEarnedFromDeletingBlocks(scoreEarned)
 
 # TO BE CANCELLED
 # connected from DragAndDrop.gd to SpeechBubble.gd and AnyStock.gd
