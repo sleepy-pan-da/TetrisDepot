@@ -57,12 +57,15 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 	var selectedColliders = space.intersect_shape(query, 64) # 64 is needed for max colliders
 
 	# Filter for set of unique area2Ds to get selected blocks
-	mapOfSelectedBlocks = {} 
+	mapOfSelectedBlocks = {}
+	var withinGridArea : bool = false 
 	for collider in selectedColliders:
+		if collider["collider"].is_in_group("Inner"): withinGridArea = true
 		if collider["collider"].is_in_group("Block") and not collider["collider_id"] in mapOfSelectedBlocks:
 			mapOfSelectedBlocks[collider["collider_id"]] = collider["collider"]
-	# print(mapOfSelectedBlocks)
-	# print("Num of enclosed blocks: " + str(len(mapOfSelectedBlocks.values())))
+	if not withinGridArea: return false
+	#print(mapOfSelectedBlocks)
+	#print("Num of enclosed blocks: " + str(len(mapOfSelectedBlocks.values())))
 	
 	# Compute num of rows/cols
 	var rectWidth : float = abs(selectRect.extents.x*2)
@@ -70,7 +73,7 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 	var rows : float = rectHeight/64
 	var cols : float = rectWidth/64
 	
-	# print("Rows:{rows}, Cols:{cols}".format({"rows": rows, "cols": cols}))
+	#print("Rows:{rows}, Cols:{cols}".format({"rows": rows, "cols": cols}))
 	if rows <= 0 or cols <= 0:
 		print("Rows/Cols too small")
 		return false
@@ -79,8 +82,8 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 	# Helps in transposing global coords into grid coords
 	var coordRef : Vector2 = Vector2(min(dragStart.x, dragEnd.x), min(dragStart.y, dragEnd.y)) + Vector2(32, 32)
 
-	# print(coordRef)
-	# print("Start coord:{dragStart}, End coord:{dragEnd}".format({"dragStart": dragStart, "dragEnd": dragEnd}))
+	#print(coordRef)
+	#print("Start coord:{dragStart}, End coord:{dragEnd}".format({"dragStart": dragStart, "dragEnd": dragEnd}))
 
 	# Create 2d matrix of rows x cols
 	var grid = []
@@ -95,11 +98,11 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 		for coord in globalCoordsOfEachBox:
 			var i : int = (coord.y - coordRef.y)/64 # row
 			var j : int = (coord.x - coordRef.x)/64 # col
-			# print("i:{i}, j:{j}".format(({"i":i, "j":j})))
+			#print("i:{i}, j:{j}".format(({"i":i, "j":j})))
 			
 			# check if block's box exceeds rect boundary
 			if not (0<=i and i<rows) or not (0<=j and j<cols):
-				# print("Block exceeds rect boundary")
+				#print("Block exceeds rect boundary")
 				return false
 			grid[i][j] = true
 	
