@@ -3,6 +3,8 @@ extends Area2D
 export(Color, RGB) var origColour : Color
 export(Color, RGB) var disabledColour : Color
 export(String) var blockName : String
+
+var blockDestroyedVFX = load("res://Game/VFX/DestroyedBlock.tscn")
 var dragging : bool = false
 var numOfOverlappingIllegalAreas : int = 0
 var isInGridArea : bool = false
@@ -152,3 +154,41 @@ func returnGlobalCoordsOfEachBox():
 			# when rotated, the components of global_position might be floats instead of ints
 			res.append(Vector2(round(child.global_position.x), round(child.global_position.y)))
 	return res
+
+
+func destroy() -> void:
+	var blkDestroyedVFX = blockDestroyedVFX.instance()
+	get_parent().add_child(blkDestroyedVFX)
+	blkDestroyedVFX.setColour(returnColorOfDestroyedBlk())
+	print(blkDestroyedVFX.vfx.process_material.color)
+	blkDestroyedVFX.global_position = global_position
+	queue_free()
+
+
+func returnColorOfDestroyedBlk() -> Color:
+	match blockName:
+		"IBlock":
+			print("IBlock color")
+			return Color("#41778D")
+		"JBlock":
+			print("JBlock color")
+			return Color("#F4A261")
+		"LBlock":
+			print("LBlock color")
+			return Color("#287271")
+		"OBlock":
+			print("OBlock color")
+			return Color("#E9C46A")
+		"SBlock":
+			print("SBlock color")
+			return Color("#2A9D8F")
+		"TBlock":
+			print("TBlock color")
+			return Color("#8AB17D")
+		"ZBlock":
+			print("ZBlock color")
+			return Color("#E76F51")
+	return Color("#000000")
+
+	
+		

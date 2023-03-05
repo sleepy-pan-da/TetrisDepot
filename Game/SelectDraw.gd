@@ -119,7 +119,7 @@ func deleteBlocks() -> void:
 	computeScoreAndTimeEarned()
 
 	for blk in mapOfSelectedBlocks.values():
-		blk.queue_free()
+		blk.destroy()
 
 
 func computeScoreAndTimeEarned() -> void:
