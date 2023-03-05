@@ -54,7 +54,7 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 	query.collide_with_bodies = false
 	query.set_shape(selectRect)
 	query.transform = Transform2D(0, (dragEnd+dragStart)/2)
-	var selectedColliders = space.intersect_shape(query)
+	var selectedColliders = space.intersect_shape(query, 64) # 64 is needed for max colliders
 
 	# Filter for set of unique area2Ds to get selected blocks
 	mapOfSelectedBlocks = {} 
@@ -62,7 +62,8 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 		if collider["collider"].is_in_group("Block") and not collider["collider_id"] in mapOfSelectedBlocks:
 			mapOfSelectedBlocks[collider["collider_id"]] = collider["collider"]
 	# print(mapOfSelectedBlocks)
-
+	# print("Num of enclosed blocks: " + str(len(mapOfSelectedBlocks.values())))
+	
 	# Compute num of rows/cols
 	var rectWidth : float = abs(selectRect.extents.x*2)
 	var rectHeight : float = abs(selectRect.extents.y*2)
@@ -90,7 +91,6 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 	
 	for blk in mapOfSelectedBlocks.values():
 		var globalCoordsOfEachBox = blk.returnGlobalCoordsOfEachBox()
-		# print(globalCoordsOfEachBox)
 		# transpose the global coords into grid coords and mark accordingly
 		for coord in globalCoordsOfEachBox:
 			var i : int = (coord.y - coordRef.y)/64 # row
@@ -107,7 +107,7 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 	for i in range(rows):
 		for j in range(cols):
 			if not grid[i][j]:
-				print("There are empty spaces in drawn rect")
+				print("There are empty spaces in coord:{i},{j} in drawn rect".format(({"i":i,"j":j})))
 				return false
 	
 	return true
@@ -143,7 +143,30 @@ func computeScoreForNumberOfBlocksRemovedAtOneGo(numberOfBlocks : int) -> int:
 
 
 func computeTimeIncremented(numberOfBlocks : int) -> int:
-	return numberOfBlocks-1
+	# 16 +80s
+	# 12-15 +60s
+	# 8-11 + 40s
+	# 5-7 +30s
+	# 4 +10
+	# 3 +5s
+	# 2 +1s
+	# 1 +0s  
+	if numberOfBlocks <= 1:
+		return 0
+	elif numberOfBlocks <= 2:
+		return 1
+	elif numberOfBlocks <= 3:
+		return 5
+	elif numberOfBlocks <= 4:
+		return 10
+	elif numberOfBlocks <= 7:
+		return 30
+	elif numberOfBlocks <= 11:
+		return 40
+	elif numberOfBlocks <= 15:
+		return 60
+	else:
+		return 80
 
 
 func computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(numberOfBlockTypes : int) -> int:
