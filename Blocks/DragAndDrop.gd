@@ -64,6 +64,7 @@ func _unhandled_input(event : InputEvent) -> void:
 				prevPos = global_position
 				prevRotationInDegrees =  int(rotation_degrees) % 360
 				reparentIfNeeded()
+				AudioManager.playSfx("PlaceBlock")
 			elif isInSpeechBubble:
 				EventManager.emit_signal("droppedBlockIntoSpeechBubble", blockName)
 			else:
@@ -75,6 +76,7 @@ func _unhandled_input(event : InputEvent) -> void:
 			# rotate(deg2rad(90))
 			rotation_degrees += 90
 			rotation_degrees = int(rotation_degrees) % 360 # need to see if this fixes the float bug in rotation
+			AudioManager.playSfx("RotateBlock")
 
 
 # when this happens, it means that something is in the way of the block	 

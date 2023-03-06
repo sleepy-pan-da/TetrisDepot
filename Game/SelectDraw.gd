@@ -113,6 +113,9 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 				print("There are empty spaces in coord:{i},{j} in drawn rect".format(({"i":i,"j":j})))
 				return false
 	
+	match len(mapOfSelectedBlocks.values()):
+		1, 2:
+			AudioManager.playSfx("CanClear1-2Blocks")
 	return true
 
 
