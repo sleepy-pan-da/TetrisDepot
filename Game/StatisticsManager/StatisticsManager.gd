@@ -6,14 +6,14 @@ var curScore : int = 0
 	
 	
 func _ready() -> void:
-	resetStats()
-	timeLabel.reset()
+	reset()
 	EventManager.connect("computedScoreEarnedFromDeletingBlocks", self, "addScore")
 
 
-func resetStats() -> void:
+func reset() -> void:
 	curScore = 0
 	scoreLabel.updateLabel(curScore)
+	timeLabel.reset()
 
 
 func addScore(additionalScore : int) -> void:

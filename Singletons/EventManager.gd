@@ -16,6 +16,9 @@ signal tookStock()
 # connected from SelectDraw.gd to Time.gd
 signal computedTimeEarnedFromDeletingBlocks(timeEarned)
 
+# connected from Time.gd to GameOver.gd
+signal gameOver()
+
 # connected from SelectDraw.gd to StatisticsManager.gd
 signal computedScoreEarnedFromDeletingBlocks(scoreEarned)
 

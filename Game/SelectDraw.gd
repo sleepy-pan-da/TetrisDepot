@@ -159,15 +159,15 @@ func computeTimeIncremented(numberOfBlocks : int) -> int:
 	elif numberOfBlocks <= 2:
 		return 1
 	elif numberOfBlocks <= 3:
-		return 5
+		return 3
 	elif numberOfBlocks <= 4:
-		return 10
+		return 5
 	elif numberOfBlocks <= 7:
-		return 30
+		return 10
 	elif numberOfBlocks <= 11:
-		return 40
+		return 20
 	elif numberOfBlocks <= 15:
-		return 60
+		return 40
 	else:
 		return 80
 

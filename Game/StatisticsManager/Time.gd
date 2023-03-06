@@ -29,3 +29,4 @@ func _on_Timer_timeout() -> void:
 	curTimeLeftInSec -= 1
 	updateLabel()
 	if curTimeLeftInSec > 0: timer.start()
+	else: EventManager.emit_signal("gameOver")
