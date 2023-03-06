@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/click.wav-f1114dac8518adfbc07d6d753fcf136d.sample"
+path="res://.import/ClearBlks4.wav-8a51838a63a3196d0e14f09c13407f80.sample"
 
 [deps]
 
-source_file="res://Assets/Sound/SFX/click.wav"
-dest_files=[ "res://.import/click.wav-f1114dac8518adfbc07d6d753fcf136d.sample" ]
+source_file="res://Assets/Sound/SFX/ClearBlks4.wav"
+dest_files=[ "res://.import/ClearBlks4.wav-8a51838a63a3196d0e14f09c13407f80.sample" ]
 
 [params]
 

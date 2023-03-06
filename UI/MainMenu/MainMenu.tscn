@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Fonts/press_start/prstartk.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://UI/MainMenu/Buttons.gd" type="Script" id=2]
+[ext_resource path="res://Shaders/CrtShader.tscn" type="PackedScene" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 112
@@ -87,5 +88,8 @@ custom_fonts/font = SubResource( 2 )
 enabled_focus_mode = 0
 text = "PLAY"
 flat = true
+
+[node name="CrtShader" parent="CanvasLayer2" instance=ExtResource( 3 )]
+visible = false
 
 [connection signal="pressed" from="CanvasLayer2/Buttons/Play" to="CanvasLayer2/Buttons" method="_on_Play_pressed"]

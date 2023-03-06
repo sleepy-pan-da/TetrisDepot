@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/synth(1).wav-2d04f1abeac1633b0fb6a0a2c3ca2485.sample"
+path="res://.import/ClearBlks2.wav-088a70ed044912c1df7ca999138f3e12.sample"
 
 [deps]
 
-source_file="res://Assets/Sound/SFX/synth(1).wav"
-dest_files=[ "res://.import/synth(1).wav-2d04f1abeac1633b0fb6a0a2c3ca2485.sample" ]
+source_file="res://Assets/Sound/SFX/ClearBlks2.wav"
+dest_files=[ "res://.import/ClearBlks2.wav-088a70ed044912c1df7ca999138f3e12.sample" ]
 
 [params]
 

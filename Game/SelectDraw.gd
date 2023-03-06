@@ -113,9 +113,6 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 				print("There are empty spaces in coord:{i},{j} in drawn rect".format(({"i":i,"j":j})))
 				return false
 	
-	match len(mapOfSelectedBlocks.values()):
-		1, 2:
-			AudioManager.playSfx("CanClear1-2Blocks")
 	return true
 
 
@@ -124,8 +121,21 @@ func deleteBlocks() -> void:
 	
 	computeScoreAndTimeEarned()
 
+	match len(mapOfSelectedBlocks.values()):
+		1, 2:
+			AudioManager.playClearBlkSfx("CanClear1")
+		3,4,5,6,7:
+			AudioManager.playClearBlkSfx("CanClear2")
+		8,9,10,11,12,13,14,15:
+			AudioManager.playClearBlkSfx("CanClear3")
+		16:
+			AudioManager.playClearBlkSfx("CanClear4")
+		var remainingSize:
+			print("Error in SelectDraw.gd, SelectDraw has {i} blks".format({"i":remainingSize}))
+
 	for blk in mapOfSelectedBlocks.values():
 		blk.destroy()
+	AudioManager.playSfx("ExplodeBlocks")
 
 
 func computeScoreAndTimeEarned() -> void:
