@@ -1,7 +1,7 @@
 extends Label
 
 onready var timer : Timer = $Timer
-const INITIAL_TIME_LEFT_IN_SECONDS : int = 300
+const INITIAL_TIME_LEFT_IN_SECONDS : int = 180
 var curTimeLeftInSec : int = 0
 
 

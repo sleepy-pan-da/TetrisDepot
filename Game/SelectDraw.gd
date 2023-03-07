@@ -1,6 +1,7 @@
 extends Node2D
 
 export(bool) var isTutorial : bool = false
+var textFeedback = load("res://Game/TextFeedback/TextFeedback.tscn")
 var dragStart : Vector2 = Vector2.ZERO
 var dragEnd : Vector2 = Vector2.ZERO
 var dragging : bool = false
@@ -121,7 +122,7 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 func deleteBlocks() -> void:
 	# delete the blocks enclosed in the drawn rect
 	
-	computeScoreAndTimeEarned()
+	var earnedStats : Array = computeScoreAndTimeEarned()
 
 	match len(mapOfSelectedBlocks.values()):
 		1, 2:
@@ -138,11 +139,25 @@ func deleteBlocks() -> void:
 	for blk in mapOfSelectedBlocks.values():
 		blk.destroy()
 	AudioManager.playSfx("ExplodeBlocks")
-	if isTutorial: emit_signal("deletedBlocksForTutorial")
+	if isTutorial:
+		emit_signal("deletedBlocksForTutorial")
+		return
+	
+	spawnTextFeedback(earnedStats)
 
 
+func spawnTextFeedback(earnedStats : Array) -> void:
+	var newTextFeedback = textFeedback.instance()
+	add_child(newTextFeedback)
+	# get center pos of rect
+	var vectorToCenterPos : Vector2 = Vector2(abs(dragEnd.x-dragStart.x)/2, abs(dragEnd.y-dragStart.y)/2)
+	var centerPos : Vector2 = Vector2(min(dragStart.x, dragEnd.x), min(dragStart.y, dragEnd.y)) + vectorToCenterPos - newTextFeedback.rect_pivot_offset
+	newTextFeedback.rect_global_position = centerPos
+	newTextFeedback.setText(earnedStats[0], earnedStats[1])
+	newTextFeedback.popUp()
 
-func computeScoreAndTimeEarned() -> void:
+
+func computeScoreAndTimeEarned() -> Array:
 	var scoreEarned : int = 0
 	var timeIncremented : int = computeTimeIncremented(len(mapOfSelectedBlocks.values()))
 	scoreEarned += computeScoreForNumberOfBlocksRemovedAtOneGo(len(mapOfSelectedBlocks.values()))
@@ -156,6 +171,7 @@ func computeScoreAndTimeEarned() -> void:
 	print("scoreEarned:{i}, timeIncremented:{j}".format(({"i":scoreEarned, "j":timeIncremented})))
 	EventManager.emit_signal("computedTimeEarnedFromDeletingBlocks", timeIncremented)
 	EventManager.emit_signal("computedScoreEarnedFromDeletingBlocks", scoreEarned)
+	return [scoreEarned, timeIncremented]
 
 
 func computeScoreForNumberOfBlocksRemovedAtOneGo(numberOfBlocks : int) -> int:

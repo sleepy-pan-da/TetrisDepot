@@ -161,7 +161,6 @@ func destroy() -> void:
 	var blkDestroyedVFX = blockDestroyedVFX.instance()
 	get_parent().add_child(blkDestroyedVFX)
 	blkDestroyedVFX.setColour(returnColorOfDestroyedBlk())
-	print(blkDestroyedVFX.vfx.process_material.color)
 	blkDestroyedVFX.global_position = global_position
 	queue_free()
 

@@ -132,8 +132,8 @@ script = ExtResource( 3 )
 [node name="GameOver" parent="." instance=ExtResource( 8 )]
 visible = false
 margin_left = 512.0
-margin_top = 64.0
+margin_top = 128.0
 margin_right = 896.0
-margin_bottom = 704.0
+margin_bottom = 768.0
 
 [connection signal="timeout" from="CanvasLayer2/Statistics/VBoxContainer/Time/Timer" to="CanvasLayer2/Statistics/VBoxContainer/Time" method="_on_Timer_timeout"]
