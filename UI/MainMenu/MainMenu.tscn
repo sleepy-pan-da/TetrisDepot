@@ -74,11 +74,13 @@ margin_left = -272.0
 margin_top = -21.0
 margin_right = 272.0
 margin_bottom = 331.0
+custom_constants/separation = 38
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-pathToNextScene = "res://Game/Game.tscn"
+pathToGameScene = "res://Game/Game.tscn"
+pathToTutorialScene = "res://Game/Tutorial/Tutorial.tscn"
 
 [node name="Play" type="Button" parent="CanvasLayer2/Buttons"]
 margin_right = 544.0
@@ -89,7 +91,28 @@ enabled_focus_mode = 0
 text = "PLAY"
 flat = true
 
+[node name="Tutorial" type="Button" parent="CanvasLayer2/Buttons"]
+margin_top = 108.0
+margin_right = 544.0
+margin_bottom = 178.0
+focus_mode = 0
+custom_fonts/font = SubResource( 2 )
+enabled_focus_mode = 0
+text = "TUTORIAL"
+flat = true
+
+[node name="Settings" type="Button" parent="CanvasLayer2/Buttons"]
+margin_top = 216.0
+margin_right = 544.0
+margin_bottom = 286.0
+focus_mode = 0
+custom_fonts/font = SubResource( 2 )
+enabled_focus_mode = 0
+text = "SETTINGS"
+flat = true
+
 [node name="CrtShader" parent="CanvasLayer2" instance=ExtResource( 3 )]
 visible = false
 
 [connection signal="pressed" from="CanvasLayer2/Buttons/Play" to="CanvasLayer2/Buttons" method="_on_Play_pressed"]
+[connection signal="pressed" from="CanvasLayer2/Buttons/Tutorial" to="CanvasLayer2/Buttons" method="_on_Tutorial_pressed"]

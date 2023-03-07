@@ -1,10 +1,12 @@
 extends Node2D
 
+export(bool) var isTutorial : bool = false
 var dragStart : Vector2 = Vector2.ZERO
 var dragEnd : Vector2 = Vector2.ZERO
 var dragging : bool = false
 var canDelete : bool = false
-var mapOfSelectedBlocks = {} 
+var mapOfSelectedBlocks = {}
+signal deletedBlocksForTutorial
 
 
 func _unhandled_input(event) -> void:
@@ -136,6 +138,8 @@ func deleteBlocks() -> void:
 	for blk in mapOfSelectedBlocks.values():
 		blk.destroy()
 	AudioManager.playSfx("ExplodeBlocks")
+	if isTutorial: emit_signal("deletedBlocksForTutorial")
+
 
 
 func computeScoreAndTimeEarned() -> void:
