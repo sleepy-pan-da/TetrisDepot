@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/CharcoalGreenBlock.png-9f65a1dc6fb23716da80753a3259de71.stex"
+path="res://.import/CharcoalGreenBlock.png-0bbbe18592491ef69723468936711f59.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/grid/CharcoalGreenBlock.png"
-dest_files=[ "res://.import/CharcoalGreenBlock.png-9f65a1dc6fb23716da80753a3259de71.stex" ]
+source_file="res://tilesets/grid/OldBlocks/CharcoalGreenBlock.png"
+dest_files=[ "res://.import/CharcoalGreenBlock.png-0bbbe18592491ef69723468936711f59.stex" ]
 
 [params]
 

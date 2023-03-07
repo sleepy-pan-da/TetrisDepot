@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/BurntOrangeBlock.png-944e17d00b4ffc479a92cec0d50ce9ee.stex"
+path="res://.import/NewGreenBlock.png-2f62670e35005616d049a01472ee8e7e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/grid/BurntOrangeBlock.png"
-dest_files=[ "res://.import/BurntOrangeBlock.png-944e17d00b4ffc479a92cec0d50ce9ee.stex" ]
+source_file="res://tilesets/grid/NewBlocks/NewGreenBlock.png"
+dest_files=[ "res://.import/NewGreenBlock.png-2f62670e35005616d049a01472ee8e7e.stex" ]
 
 [params]
 

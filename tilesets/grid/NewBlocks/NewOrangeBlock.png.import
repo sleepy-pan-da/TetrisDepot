@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/YellowBlock.png-b9084d925a35ba6c76c5b9ef74ae709d.stex"
+path="res://.import/NewOrangeBlock.png-5907460ab70dd5e2335b07018a9290e7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/grid/YellowBlock.png"
-dest_files=[ "res://.import/YellowBlock.png-b9084d925a35ba6c76c5b9ef74ae709d.stex" ]
+source_file="res://tilesets/grid/NewBlocks/NewOrangeBlock.png"
+dest_files=[ "res://.import/NewOrangeBlock.png-5907460ab70dd5e2335b07018a9290e7.stex" ]
 
 [params]
 

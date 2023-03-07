@@ -169,25 +169,25 @@ func returnColorOfDestroyedBlk() -> Color:
 	match blockName:
 		"IBlock":
 			print("IBlock color")
-			return Color("#41778D")
+			return Color("#6A4C93")
 		"JBlock":
 			print("JBlock color")
-			return Color("#F4A261")
+			return Color("#1982C4")
 		"LBlock":
 			print("LBlock color")
-			return Color("#287271")
+			return Color("#52A675")
 		"OBlock":
 			print("OBlock color")
-			return Color("#E9C46A")
+			return Color("#FFCA3A")
 		"SBlock":
 			print("SBlock color")
-			return Color("#2A9D8F")
+			return Color("#287271")
 		"TBlock":
 			print("TBlock color")
-			return Color("#8AB17D")
+			return Color("#FF924C")
 		"ZBlock":
 			print("ZBlock color")
-			return Color("#E76F51")
+			return Color("#FF595E")
 	return Color("#000000")
 
 	
