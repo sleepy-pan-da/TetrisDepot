@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/TetrisRemixNew.mp3-292c826f83130cdb9e0d57a1488815fc.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sound/Music/TetrisRemixNew.mp3"
+dest_files=[ "res://.import/TetrisRemixNew.mp3-292c826f83130cdb9e0d57a1488815fc.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
