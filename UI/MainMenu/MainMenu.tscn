@@ -5,7 +5,7 @@
 [ext_resource path="res://Shaders/CrtShader.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI/Settings/Settings.tscn" type="PackedScene" id=4]
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=1]
 size = 112
 font_data = ExtResource( 1 )
 
@@ -60,7 +60,7 @@ margin_left = -504.0
 margin_top = -218.375
 margin_right = 504.0
 margin_bottom = -90.3755
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 1 )
 text = "ClearRect"
 align = 1
 valign = 1

@@ -188,21 +188,21 @@ func computeTimeIncremented(numberOfBlocks : int) -> int:
 	# 2 +1s
 	# 1 +0s  
 	if numberOfBlocks <= 1:
-		return 0
-	elif numberOfBlocks <= 2:
 		return 1
-	elif numberOfBlocks <= 3:
+	elif numberOfBlocks <= 2:
 		return 3
-	elif numberOfBlocks <= 4:
+	elif numberOfBlocks <= 3:
 		return 5
-	elif numberOfBlocks <= 7:
+	elif numberOfBlocks <= 4:
 		return 10
-	elif numberOfBlocks <= 11:
+	elif numberOfBlocks <= 7:
 		return 20
-	elif numberOfBlocks <= 15:
+	elif numberOfBlocks <= 11:
 		return 40
+	elif numberOfBlocks <= 15:
+		return 60
 	else:
-		return 80
+		return 0
 
 
 func computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(numberOfBlockTypes : int) -> int:
