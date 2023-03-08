@@ -46,4 +46,27 @@ func changeTempoOfMusic(speedMultiplier : float) -> void:
 	
 	audio.pitch_scale = speedMultiplier
 	AudioServer.get_bus_effect(1, 0).pitch_scale = 1.0 / speedMultiplier
-	
+
+
+func setMasterBusVolumeDb(desiredVolDb : float) -> void:
+	AudioServer.set_bus_volume_db(0, desiredVolDb)
+
+
+func setMusicBusVolumeDb(desiredVolDb : float) -> void:
+	AudioServer.set_bus_volume_db(1, desiredVolDb)
+
+
+func setSfxBusVolumeDb(desiredVolDb : float) -> void:
+	AudioServer.set_bus_volume_db(2, desiredVolDb)
+
+
+func getMasterBusVolumeDb() -> float:
+	return AudioServer.get_bus_volume_db(0)
+
+
+func getMusicBusVolumeDb() -> float:
+	return AudioServer.get_bus_volume_db(1)
+
+
+func getSfxBusVolumeDb() -> float:
+	return AudioServer.get_bus_volume_db(2)

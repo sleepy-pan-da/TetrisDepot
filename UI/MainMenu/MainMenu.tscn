@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Fonts/press_start/prstartk.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://UI/MainMenu/Buttons.gd" type="Script" id=2]
 [ext_resource path="res://Shaders/CrtShader.tscn" type="PackedScene" id=3]
+[ext_resource path="res://UI/Settings/Settings.tscn" type="PackedScene" id=4]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=3]
 size = 112
 font_data = ExtResource( 1 )
 
@@ -56,11 +57,13 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -504.0
-margin_top = -181.0
+margin_top = -218.375
 margin_right = 504.0
-margin_bottom = -53.0
-custom_fonts/font = SubResource( 1 )
+margin_bottom = -90.3755
+custom_fonts/font = SubResource( 3 )
 text = "ClearRect"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -81,6 +84,7 @@ __meta__ = {
 }
 pathToGameScene = "res://Game/Game.tscn"
 pathToTutorialScene = "res://Game/Tutorial/Tutorial.tscn"
+pathToSettings = NodePath("../Settings")
 
 [node name="Play" type="Button" parent="CanvasLayer2/Buttons"]
 margin_right = 544.0
@@ -111,8 +115,14 @@ enabled_focus_mode = 0
 text = "SETTINGS"
 flat = true
 
+[node name="Settings" parent="CanvasLayer2" instance=ExtResource( 4 )]
+visible = false
+margin_top = 125.263
+margin_bottom = 717.263
+
 [node name="CrtShader" parent="CanvasLayer2" instance=ExtResource( 3 )]
 visible = false
 
 [connection signal="pressed" from="CanvasLayer2/Buttons/Play" to="CanvasLayer2/Buttons" method="_on_Play_pressed"]
 [connection signal="pressed" from="CanvasLayer2/Buttons/Tutorial" to="CanvasLayer2/Buttons" method="_on_Tutorial_pressed"]
+[connection signal="pressed" from="CanvasLayer2/Buttons/Settings" to="CanvasLayer2/Buttons" method="_on_Settings_pressed"]

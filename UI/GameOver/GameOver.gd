@@ -16,4 +16,5 @@ func _on_TryAgain_pressed() -> void:
 
 
 func _on_Quit_pressed() -> void:
+	AudioManager.changeTempoOfMusic(1)
 	get_tree().change_scene(pathToMainMenu)
