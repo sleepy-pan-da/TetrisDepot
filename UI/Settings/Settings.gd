@@ -3,6 +3,7 @@ extends Control
 onready var masterSlider : HSlider = $Volumes/Master/MasterSlider
 onready var musicSlider : HSlider = $Volumes/Music/MusicSlider
 onready var sfxSlider : HSlider = $Volumes/Sfx/SfxSlider
+onready var crtCheckBox : CheckBox = $ToggleCRT/CRTCheckBox
 
 signal pressedBack
 
@@ -14,6 +15,7 @@ func updateSettingFields() -> void:
 	masterSlider.value = db2linear(AudioManager.getMasterBusVolumeDb())
 	musicSlider.value = db2linear(AudioManager.getMusicBusVolumeDb())
 	sfxSlider.value = db2linear(AudioManager.getSfxBusVolumeDb())
+	crtCheckBox.pressed = CrtManager.isCrtToggled
 
 
 func _on_Back_pressed() -> void:
@@ -37,4 +39,6 @@ func _on_SfxSlider_value_changed(value : float) -> void:
 
 
 func _on_CRTCheckBox_toggled(toggleState : bool) -> void:
-	print("Crt:{state}".format({"state": toggleState}))
+	# print("Crt:{state}".format({"state": toggleState}))
+	CrtManager.toggleCrt(toggleState)
+	EventManager.emit_signal("updateCrtShaderStatus")

@@ -22,6 +22,9 @@ signal gameOver()
 # connected from SelectDraw.gd to StatisticsManager.gd
 signal computedScoreEarnedFromDeletingBlocks(scoreEarned)
 
+# connected from Settings.gd to CrtShader.gd
+signal updateCrtShaderStatus(status)
+
 # TO BE CANCELLED
 # connected from DragAndDrop.gd to SpeechBubble.gd and AnyStock.gd
 signal droppedBlockIntoSpeechBubble(blockName) 
