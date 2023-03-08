@@ -3,6 +3,7 @@ extends Node2D
 export(Array, PackedScene) var blocks
 export(NodePath) var pathToHeldStocks
 onready var heldStocks : Node = get_node(pathToHeldStocks)
+var bagOfBlocks = []
 
 
 func _ready() -> void:
@@ -11,13 +12,16 @@ func _ready() -> void:
 
 
 func replenishEmptyStocks() -> void:
+	if bagOfBlocks.empty():
+		bagOfBlocks = generateBagOfBlocks()
 	for child in get_children():
 		if child is Position2D and child.get_child_count() == 0:
 			generateStock(child)
 
 
 func generateStock(parentNode : Node) -> void:
-	var i : int = generateRandonIndexForStock()
+	# var i : int = generateRandonIndexForStock()
+	var i : int = bagOfBlocks.pop_front()
 	var stock : Node = blocks[i].instance()
 	if stock.has_method("setRefToHeldStocks"):
 		stock.setRefToHeldStocks(heldStocks)
@@ -52,3 +56,13 @@ func generateRandonIndexForStock() -> int:
 		var coinToss : int = randi()%2
 		if coinToss: return 4 # SBlock
 		else: return 6 # ZBlock
+
+
+func generateBagOfBlocks() -> Array:
+	var bag = []
+	for i in range(7):
+		bag.append(i)
+	randomize()
+	bag.shuffle()
+	print("Generated new bag: {bag}".format({"bag": bag}))
+	return bag
