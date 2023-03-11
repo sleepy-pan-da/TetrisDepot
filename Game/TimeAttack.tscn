@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://UI/Settings/Settings.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/StocksToTake/StocksToTake.tscn" type="PackedScene" id=2]
@@ -11,12 +11,17 @@
 [ext_resource path="res://Game/PauseManager.gd" type="Script" id=9]
 [ext_resource path="res://Game/SelectDraw.gd" type="Script" id=10]
 [ext_resource path="res://Assets/Fonts/press_start/prstartk.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://Game/StatisticsManager/GiveUp.gd" type="Script" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
 font_data = ExtResource( 11 )
 
 [sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 11 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
 font_data = ExtResource( 11 )
 
 [node name="TimeAttack" type="Node2D"]
@@ -118,6 +123,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="GiveUpButton" type="Button" parent="CanvasLayer2"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -433.619
+margin_top = 82.517
+margin_right = -197.619
+margin_bottom = 146.517
+custom_fonts/font = SubResource( 3 )
+text = "GIVE UP"
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="CrtShader" parent="CanvasLayer2" instance=ExtResource( 5 )]
 visible = false
 
@@ -153,3 +174,4 @@ script = ExtResource( 9 )
 settingsPath = NodePath("../Settings")
 
 [connection signal="timeout" from="CanvasLayer2/Statistics/VBoxContainer/Time/Timer" to="CanvasLayer2/Statistics/VBoxContainer/Time" method="_on_Timer_timeout"]
+[connection signal="pressed" from="CanvasLayer2/GiveUpButton" to="CanvasLayer2/GiveUpButton" method="_on_GiveUpButton_pressed"]
