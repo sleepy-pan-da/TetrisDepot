@@ -73,21 +73,22 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -272.0
-margin_top = -21.0
-margin_right = 272.0
-margin_bottom = 331.0
+margin_left = -396.0
+margin_top = -42.4106
+margin_right = 396.0
+margin_bottom = 351.589
 custom_constants/separation = 38
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-pathToGameScene = "res://Game/Game.tscn"
+pathToZenScene = "res://Game/Zen.tscn"
 pathToTutorialScene = "res://Game/Tutorial/Tutorial.tscn"
+pathToTimeAttackScene = "res://Game/TimeAttack.tscn"
 pathToSettings = NodePath("../Settings")
 
-[node name="Play" type="Button" parent="CanvasLayer2/Buttons"]
-margin_right = 544.0
+[node name="Zen" type="Button" parent="CanvasLayer2/Buttons"]
+margin_right = 792.0
 margin_bottom = 70.0
 focus_mode = 0
 custom_fonts/font = SubResource( 2 )
@@ -97,7 +98,7 @@ flat = true
 
 [node name="Tutorial" type="Button" parent="CanvasLayer2/Buttons"]
 margin_top = 108.0
-margin_right = 544.0
+margin_right = 792.0
 margin_bottom = 178.0
 focus_mode = 0
 custom_fonts/font = SubResource( 2 )
@@ -105,10 +106,20 @@ enabled_focus_mode = 0
 text = "TUTORIAL"
 flat = true
 
-[node name="Settings" type="Button" parent="CanvasLayer2/Buttons"]
+[node name="TimeAttack" type="Button" parent="CanvasLayer2/Buttons"]
 margin_top = 216.0
-margin_right = 544.0
+margin_right = 792.0
 margin_bottom = 286.0
+focus_mode = 0
+custom_fonts/font = SubResource( 2 )
+enabled_focus_mode = 0
+text = "TIME ATTACK"
+flat = true
+
+[node name="Settings" type="Button" parent="CanvasLayer2/Buttons"]
+margin_top = 324.0
+margin_right = 792.0
+margin_bottom = 394.0
 focus_mode = 0
 custom_fonts/font = SubResource( 2 )
 enabled_focus_mode = 0
@@ -123,6 +134,7 @@ margin_bottom = 717.263
 [node name="CrtShader" parent="CanvasLayer2" instance=ExtResource( 3 )]
 visible = false
 
-[connection signal="pressed" from="CanvasLayer2/Buttons/Play" to="CanvasLayer2/Buttons" method="_on_Play_pressed"]
+[connection signal="pressed" from="CanvasLayer2/Buttons/Zen" to="CanvasLayer2/Buttons" method="_on_Zen_pressed"]
 [connection signal="pressed" from="CanvasLayer2/Buttons/Tutorial" to="CanvasLayer2/Buttons" method="_on_Tutorial_pressed"]
+[connection signal="pressed" from="CanvasLayer2/Buttons/TimeAttack" to="CanvasLayer2/Buttons" method="_on_TimeAttack_pressed"]
 [connection signal="pressed" from="CanvasLayer2/Buttons/Settings" to="CanvasLayer2/Buttons" method="_on_Settings_pressed"]

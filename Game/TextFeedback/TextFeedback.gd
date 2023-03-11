@@ -3,8 +3,12 @@ extends Label
 onready var tween : Tween = $"Tween"
 
 
-func setText(score : int, time: int) -> void:
+func setTextForTimeAttack(score : int, time: int) -> void:
 	text = "+{score}pts\n+{time}s".format({"score": score, "time": time})
+
+
+func setTextForZen(score : int, blocks: int) -> void:
+	text = "+{score}pts\n+{blocks}blocks".format({"score": score, "blocks": blocks})
 
 
 func popUp() -> void:

@@ -1,6 +1,8 @@
 extends Node2D
 
 export(bool) var isTutorial : bool = false
+export(bool) var isZenMode : bool = false
+
 var textFeedback = load("res://Game/TextFeedback/TextFeedback.tscn")
 var dragStart : Vector2 = Vector2.ZERO
 var dragEnd : Vector2 = Vector2.ZERO
@@ -122,8 +124,6 @@ func checkIfCanDeleteBlocksInRect() -> bool:
 func deleteBlocks() -> void:
 	# delete the blocks enclosed in the drawn rect
 	
-	var earnedStats : Array = computeScoreAndTimeEarned()
-
 	match len(mapOfSelectedBlocks.values()):
 		1, 2:
 			AudioManager.playClearBlkSfx("CanClear1")
@@ -143,6 +143,11 @@ func deleteBlocks() -> void:
 		emit_signal("deletedBlocksForTutorial")
 		return
 	
+	var earnedStats : Array
+	if not isZenMode:
+		earnedStats = computeScoreAndTimeEarned()
+	else:
+		earnedStats = computeScoreAndBlocksEarned()
 	spawnTextFeedback(earnedStats)
 
 
@@ -153,25 +158,46 @@ func spawnTextFeedback(earnedStats : Array) -> void:
 	var vectorToCenterPos : Vector2 = Vector2(abs(dragEnd.x-dragStart.x)/2, abs(dragEnd.y-dragStart.y)/2)
 	var centerPos : Vector2 = Vector2(min(dragStart.x, dragEnd.x), min(dragStart.y, dragEnd.y)) + vectorToCenterPos - newTextFeedback.rect_pivot_offset
 	newTextFeedback.rect_global_position = centerPos
-	newTextFeedback.setText(earnedStats[0], earnedStats[1])
+	if not isZenMode:
+		newTextFeedback.setTextForTimeAttack(earnedStats[0], earnedStats[1])
+	else:
+		newTextFeedback.setTextForZen(earnedStats[0], earnedStats[1])
 	newTextFeedback.popUp()
 
 
 func computeScoreAndTimeEarned() -> Array:
 	var scoreEarned : int = 0
-	var timeIncremented : int = computeTimeIncremented(len(mapOfSelectedBlocks.values()))
 	scoreEarned += computeScoreForNumberOfBlocksRemovedAtOneGo(len(mapOfSelectedBlocks.values()))
 	# get number of unique block types to compute score
 	var blockTypes = {}
 	for blk in mapOfSelectedBlocks.values():
 		if not blk.blockName in blockTypes:
 			blockTypes[blk.blockName] = null
-	scoreEarned += computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(blockTypes.size())
+			scoreEarned += computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(blockTypes.size())
+
+	var timeIncremented : int = computeTimeIncremented(len(mapOfSelectedBlocks.values()))
 	
-	print("scoreEarned:{i}, timeIncremented:{j}".format(({"i":scoreEarned, "j":timeIncremented})))
+	# print("scoreEarned:{i}, timeIncremented:{j}".format(({"i":scoreEarned, "j":timeIncremented})))
 	EventManager.emit_signal("computedTimeEarnedFromDeletingBlocks", timeIncremented)
 	EventManager.emit_signal("computedScoreEarnedFromDeletingBlocks", scoreEarned)
 	return [scoreEarned, timeIncremented]
+
+
+func computeScoreAndBlocksEarned() -> Array:
+	var scoreEarned : int = 0
+	scoreEarned += computeScoreForNumberOfBlocksRemovedAtOneGo(len(mapOfSelectedBlocks.values()))
+	# get number of unique block types to compute score
+	var blockTypes = {}
+	for blk in mapOfSelectedBlocks.values():
+		if not blk.blockName in blockTypes:
+			blockTypes[blk.blockName] = null
+			scoreEarned += computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(blockTypes.size())
+	
+	var blocksEarned : int = computeBlocksEarned(len(mapOfSelectedBlocks.values()))
+
+	EventManager.emit_signal("computedBlocksEarnedFromDeletingBlocks", blocksEarned)
+	EventManager.emit_signal("computedScoreEarnedFromDeletingBlocks", scoreEarned)
+	return [scoreEarned, blocksEarned]
 
 
 func computeScoreForNumberOfBlocksRemovedAtOneGo(numberOfBlocks : int) -> int:
@@ -179,30 +205,51 @@ func computeScoreForNumberOfBlocksRemovedAtOneGo(numberOfBlocks : int) -> int:
 
 
 func computeTimeIncremented(numberOfBlocks : int) -> int:
-	# 16 +80s
-	# 12-15 +60s
-	# 8-11 + 40s
-	# 5-7 +30s
-	# 4 +10
-	# 3 +5s
-	# 2 +1s
 	# 1 +0s  
-	if numberOfBlocks <= 1:
+	# 2 +1s
+	# 3 +5s
+	# 4 +10
+	# 5-7 +30s
+	# 8-11 + 40s
+	# 12-14 +60s
+	# 15 +80s
+	if numberOfBlocks == 1:
 		return 1
-	elif numberOfBlocks <= 2:
+	elif numberOfBlocks == 2:
 		return 3
-	elif numberOfBlocks <= 3:
+	elif numberOfBlocks == 3:
 		return 5
-	elif numberOfBlocks <= 4:
+	elif numberOfBlocks == 4:
 		return 10
-	elif numberOfBlocks <= 7:
+	elif 5 <= numberOfBlocks and numberOfBlocks <= 7:
 		return 20
-	elif numberOfBlocks <= 11:
+	elif 8 <= numberOfBlocks and numberOfBlocks <= 11:
 		return 40
-	elif numberOfBlocks <= 15:
+	elif 12 <= numberOfBlocks and numberOfBlocks <= 14:
 		return 60
 	else:
+		return 80
+
+
+func computeBlocksEarned(numberOfBlocks : int) -> int:
+	# 1-3 +0
+	# 4-5 +x-2
+	# 6-7 +x
+	# 8-11 +x+1
+	# 12-14 +x+2
+	# 15 +x+5
+	if 1 <= numberOfBlocks and numberOfBlocks <= 3:
 		return 0
+	elif 4 <= numberOfBlocks and numberOfBlocks <= 5:
+		return numberOfBlocks-2
+	elif 6 <= numberOfBlocks and numberOfBlocks <= 7:
+		return numberOfBlocks
+	elif 8 <= numberOfBlocks and numberOfBlocks <= 11:
+		return numberOfBlocks+1
+	elif 12 <= numberOfBlocks and numberOfBlocks <= 14:
+		return numberOfBlocks+2
+	else:
+		return numberOfBlocks+5
 
 
 func computeScoreForNumberOfUniqueBlockTypesRemovedAtOneGo(numberOfBlockTypes : int) -> int:

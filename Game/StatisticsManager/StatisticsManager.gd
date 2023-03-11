@@ -1,7 +1,7 @@
 extends Control
 
-onready var timeLabel : Node = $VBoxContainer/Time
-onready var scoreLabel : Node = $VBoxContainer/Score
+onready var timeLabel : Label = $VBoxContainer/Time
+onready var scoreLabel : Label = $VBoxContainer/Score
 var curScore : int = 0
 	
 	
@@ -13,7 +13,8 @@ func _ready() -> void:
 func reset() -> void:
 	curScore = 0
 	scoreLabel.updateLabel(curScore)
-	timeLabel.reset()
+	if timeLabel.visible: # it will be hidden for zen mode
+		timeLabel.reset()
 
 
 func addScore(additionalScore : int) -> void:

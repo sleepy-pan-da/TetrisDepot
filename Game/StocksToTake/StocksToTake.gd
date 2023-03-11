@@ -2,25 +2,64 @@ extends Node2D
 
 export(Array, PackedScene) var blocks
 export(NodePath) var pathToHeldStocks
+export(bool) var isZenMode : bool = false
 onready var heldStocks : Node = get_node(pathToHeldStocks)
-var bagOfBlocks = []
+onready var textLabel : Label = $Label 
+const STARTINGBLOCKCOUNT : int = 20
+var bagOfBlocks : Array = []
+var zenBlkCount : int = STARTINGBLOCKCOUNT
 
 
 func _ready() -> void:
-	EventManager.connect("tookStock", self, "replenishEmptyStocks")
-	replenishEmptyStocks()
+	if not isZenMode:
+		EventManager.connect("tookStock", self, "replenishEmptyStocks")
+		replenishEmptyStocks()
+	else:
+		EventManager.connect("tookStock", self, "decrementZenBlkCount")
+		EventManager.connect("tookStock", self, "replenishEmptyStocksForZen")
+		EventManager.connect("computedBlocksEarnedFromDeletingBlocks", self, "incrementZenBlkCount")
+		updateTextLabelAboutBlkCount()
+		replenishEmptyStocksForZen()
 
 
 func replenishEmptyStocks() -> void:
-	if bagOfBlocks.empty():
-		bagOfBlocks = generateBagOfBlocks()
 	for child in get_children():
 		if child is Position2D and child.get_child_count() == 0:
 			generateStock(child)
 
 
+func replenishEmptyStocksForZen() -> void:
+	var replenishesLeft : int = zenBlkCount
+	for child in get_children():
+		if child is Position2D and child.get_child_count() > 0:
+			replenishesLeft -= 1
+
+	for child in get_children():
+		if child is Position2D and child.get_child_count() == 0:
+			if replenishesLeft <= 0:
+				print("Cannot replenish block")
+				return
+			replenishesLeft -= 1
+			generateStock(child)
+
+
+# func replenishEmptyStockBasedOnAddedZenBlockCount(addedCount : int) -> void:
+# 	if not isZenMode: return
+	
+# 	var replenishesLeft : int = addedCount 	
+# 	for child in get_children():
+# 		if child is Position2D and child.get_child_count() == 0:
+# 			if replenishesLeft <= 0:
+# 				return
+# 			replenishesLeft -= 1
+# 			generateStock(child)
+
+
 func generateStock(parentNode : Node) -> void:
 	# var i : int = generateRandonIndexForStock()
+	if bagOfBlocks.empty():
+		bagOfBlocks = generateBagOfBlocks()
+
 	var i : int = bagOfBlocks.pop_front()
 	var stock : Node = blocks[i].instance()
 	if stock.has_method("setRefToHeldStocks"):
@@ -66,3 +105,22 @@ func generateBagOfBlocks() -> Array:
 	bag.shuffle()
 	print("Generated new bag: {bag}".format({"bag": bag}))
 	return bag
+
+
+func decrementZenBlkCount() -> void:
+	if isZenMode:
+		zenBlkCount -= 1
+		zenBlkCount = int(max(zenBlkCount, 0))
+		updateTextLabelAboutBlkCount()
+
+
+func incrementZenBlkCount(toAdd : int) -> void:
+	if isZenMode:
+		zenBlkCount += toAdd
+		zenBlkCount = int(max(zenBlkCount, 0))
+		updateTextLabelAboutBlkCount()
+		replenishEmptyStocksForZen()
+
+
+func updateTextLabelAboutBlkCount() -> void:
+	textLabel.text = "{zenBlkCount} LEFT TO TAKE".format({"zenBlkCount": zenBlkCount})
