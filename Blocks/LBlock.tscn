@@ -26,6 +26,8 @@ position = Vector2( 96, 32 )
 position = Vector2( -59.4233, 57.181 )
 polygon = PoolVector2Array( -0.250786, 1.49335, 182.224, 2.33424, 182.784, -52.324, 54.3441, -52.6143, 53.9241, -117.5, -0.250786, -117.353 )
 
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="area_entered" from="." to="." method="_on_Area2D_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Area2D_area_exited"]
 [connection signal="input_event" from="." to="." method="_on_Area2D_input_event"]

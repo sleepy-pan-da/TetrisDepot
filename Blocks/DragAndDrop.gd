@@ -4,6 +4,8 @@ export(Color, RGB) var origColour : Color
 export(Color, RGB) var disabledColour : Color
 export(String) var blockName : String
 
+onready var tween : Tween =  $Tween
+
 var blockDestroyedVFX = load("res://Game/VFX/DestroyedBlock.tscn")
 var dragging : bool = false
 var numOfOverlappingIllegalAreas : int = 0
@@ -17,8 +19,8 @@ signal onDragOrDrop
 
 func _ready() -> void:
 	connect("onDragOrDrop", self, "setDragState")
-	EventManager.connect("updatedSpeechBubble", self, "updateBlockStatus")
-	EventManager.connect("updatedAnyStockSpeechBubble", self, "deleteBlock")
+	# EventManager.connect("updatedSpeechBubble", self, "updateBlockStatus")
+	# EventManager.connect("updatedAnyStockSpeechBubble", self, "deleteBlock")
 
 	prevPos = global_position
 	prevRotationInDegrees = 0
@@ -36,14 +38,18 @@ func setDragState():
 	z_index = 1 if dragging else 0 # render the dragged block on top of the other blocks
 
 
-# to drag
-func _on_Area2D_input_event(_viewport, event, _shape_idx):
-	# This fixes the bug where blocks can be moved just after pause, but it will eat some inputs as a result.  
-	# if Input.is_action_just_pressed("left_click"):
-	# 	emit_signal("onDragOrDrop")
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
-			emit_signal("onDragOrDrop")
+# to pick up
+func _on_Area2D_input_event(_viewport, _event, _shape_idx):
+	if Input.is_action_just_pressed("left_click") and not dragging:
+		# print("pick up blk")
+		onPickUp()
+		emit_signal("onDragOrDrop")
+		
+
+func onPickUp():
+	tween.interpolate_property(self, "scale", Vector2(1.2,1.2), Vector2(1,1), 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.start()
+
 
 func _on_mouse_entered() -> void:
 	if not dragging: changeAlpha(0.3)
@@ -58,26 +64,30 @@ func changeAlpha(newAlpha : float) -> void:
 
 
 # to drop
-func _unhandled_input(event : InputEvent) -> void:
-	if event is InputEventMouseButton and not event.is_pressed():
-		if event.button_index == BUTTON_LEFT and dragging:
-			emit_signal("onDragOrDrop")
-			if isInGridArea and numOfOverlappingIllegalAreas == 0: # successfully dropped block
-				prevPos = global_position
-				prevRotationInDegrees =  int(rotation_degrees) % 360
-				reparentIfNeeded()
-				AudioManager.playSfx("PlaceBlock")
-			elif isInSpeechBubble:
-				EventManager.emit_signal("droppedBlockIntoSpeechBubble", blockName)
-			else:
-				print("resetted")
-				reset()
-	elif Input.is_action_just_pressed("rotate") and dragging:
-		# rotate(PI/2)
-		# rotate(deg2rad(90))
+func _unhandled_input(_event : InputEvent) -> void:
+	if Input.is_action_just_pressed("left_click") and dragging:
+		# print("drop blk")
+		onDrop()
+		emit_signal("onDragOrDrop")
+		if isInGridArea and numOfOverlappingIllegalAreas == 0: # successfully dropped block
+			prevPos = global_position
+			prevRotationInDegrees =  int(rotation_degrees) % 360
+			reparentIfNeeded()
+			AudioManager.playSfx("PlaceBlock")
+		else:
+			print("resetted")
+			reset()
+	if Input.is_action_just_pressed("right_click") and dragging:
 		rotation_degrees += 90
 		rotation_degrees = int(rotation_degrees) % 360 # need to see if this fixes the float bug in rotation
 		AudioManager.playSfx("RotateBlock")
+
+
+func onDrop() -> void:
+	scale = Vector2(1,1)
+	input_pickable = false
+	yield(get_tree(), "idle_frame")
+	input_pickable = true
 
 
 # when this happens, it means that something is in the way of the block	 
@@ -99,19 +109,6 @@ func _on_Area2D_area_exited(area : Area2D):
 		isInGridArea = false
 	elif area.is_in_group("SpeechBubble"):
 		isInSpeechBubble = false
-
-
-func updateBlockStatus(updatedSpeechBubbleStatus : bool, _blockName : String):
-	if not isInSpeechBubble: return
-	if updatedSpeechBubbleStatus:
-		deleteBlock()
-	else:
-		reset()
-
-
-func deleteBlock() -> void:
-	if not isInSpeechBubble: return
-	queue_free()
 
 
 func reset():
