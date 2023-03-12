@@ -4,6 +4,7 @@ onready var vfx : Particles2D = $Particles2D
 
 
 func _ready() -> void:
+	print("generated vfx")
 	makeUnique()
 	vfx.emitting = true
 	vfx.one_shot = true

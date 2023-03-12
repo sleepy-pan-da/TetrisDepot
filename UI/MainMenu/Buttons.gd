@@ -1,6 +1,5 @@
 extends VBoxContainer
 
-onready var playButton : Button = $Play
 export(String) var pathToZenScene
 export(String) var pathToTutorialScene
 export(String) var pathToTimeAttackScene
@@ -21,8 +20,6 @@ func _on_Tutorial_pressed() -> void:
 
 func _on_TimeAttack_pressed() -> void:
 	get_tree().change_scene(pathToTimeAttackScene)
-
-
 
 
 func _on_Settings_pressed() -> void:

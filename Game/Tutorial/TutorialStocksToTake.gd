@@ -3,7 +3,7 @@ extends Node2D
 export(Array, PackedScene) var blocks
 export(NodePath) var pathToHeldStocks
 onready var heldStocks : Node = get_node(pathToHeldStocks)
-var map = {"LBlock": 2, "JBlock": 1, "SBlock": 4}
+var map = {"LBlock": 2, "JBlock": 1, "SBlock": 4, "IBlock": 0}
 signal takenAllStocks
 
 
@@ -19,6 +19,12 @@ func spawn2LBlocks() -> void:
 		var block : Node = spawnBlock("LBlock")
 		if not block: return
 		curChild.add_child(block)
+
+
+func spawnNextWaveOfBlocks(instructionI : int) -> void:
+	if instructionI == 2: spawnLBlockJBlockSBlock()
+	elif instructionI == 4: spawnIBlock()
+	else: print("no more wave to spawn")
 
 
 func spawnBlock(blockName : String) -> Node:
@@ -39,7 +45,15 @@ func spawnLBlockJBlockSBlock() -> void:
 		if i == 0: block = spawnBlock("LBlock")
 		elif i == 1: block = spawnBlock("JBlock")
 		else: block = spawnBlock("SBlock")
+		if not block: return
 		curChild.add_child(block)
+
+
+func spawnIBlock() -> void:
+	var curChild : Position2D = get_child(0)
+	var block : Node = spawnBlock("IBlock")
+	if not block: return
+	curChild.add_child(block)
 
 
 func onTookStock() -> void:
