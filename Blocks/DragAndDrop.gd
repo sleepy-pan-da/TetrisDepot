@@ -86,7 +86,7 @@ func _unhandled_input(_event : InputEvent) -> void:
 func onDrop() -> void:
 	scale = Vector2(1,1)
 	input_pickable = false
-	yield(get_tree(), "idle_frame")
+	yield(get_tree().create_timer(0.3), "timeout")
 	input_pickable = true
 
 
