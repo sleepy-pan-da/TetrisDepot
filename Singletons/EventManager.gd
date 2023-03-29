@@ -13,6 +13,23 @@ extends Node
 # connected from DragAndDrop.gd to StocksToTake.gd
 signal tookStock() 
 
+# connected from SelectDraw.gd to Time.gd
+signal computedTimeEarnedFromDeletingBlocks(timeEarned)
+
+# connected from Time.gd to GameOver.gd
+# connected from GiveUp.gd to GameOver.gd
+signal gameOver()
+
+# connected from SelectDraw.gd to StatisticsManager.gd
+signal computedScoreEarnedFromDeletingBlocks(scoreEarned)
+
+# connected from SelectDraw.gd to StocksToTake.gd
+signal computedBlocksEarnedFromDeletingBlocks(blocksEarned)
+
+# connected from Settings.gd to CrtShader.gd
+signal updateCrtShaderStatus(status)
+
+# TO BE CANCELLED
 # connected from DragAndDrop.gd to SpeechBubble.gd and AnyStock.gd
 signal droppedBlockIntoSpeechBubble(blockName) 
 

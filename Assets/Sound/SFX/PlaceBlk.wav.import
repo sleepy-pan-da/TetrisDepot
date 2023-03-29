@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/PlaceBlk.wav-0f9f03f9df732d6562962e7563d31e4e.sample"
+
+[deps]
+
+source_file="res://Assets/Sound/SFX/PlaceBlk.wav"
+dest_files=[ "res://.import/PlaceBlk.wav-0f9f03f9df732d6562962e7563d31e4e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

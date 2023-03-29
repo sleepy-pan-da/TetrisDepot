@@ -1,9 +1,12 @@
 extends Area2D
 
-
 export(Color, RGB) var origColour : Color
 export(Color, RGB) var disabledColour : Color
 export(String) var blockName : String
+
+onready var tween : Tween =  $Tween
+
+var blockDestroyedVFX = load("res://Game/VFX/DestroyedBlock.tscn")
 var dragging : bool = false
 var numOfOverlappingIllegalAreas : int = 0
 var isInGridArea : bool = false
@@ -16,8 +19,8 @@ signal onDragOrDrop
 
 func _ready() -> void:
 	connect("onDragOrDrop", self, "setDragState")
-	EventManager.connect("updatedSpeechBubble", self, "updateBlockStatus")
-	EventManager.connect("updatedAnyStockSpeechBubble", self, "deleteBlock")
+	# EventManager.connect("updatedSpeechBubble", self, "updateBlockStatus")
+	# EventManager.connect("updatedAnyStockSpeechBubble", self, "deleteBlock")
 
 	prevPos = global_position
 	prevRotationInDegrees = 0
@@ -30,34 +33,61 @@ func _process(_delta):
 
 
 func setDragState():
+	changeAlpha(1)
 	dragging = !dragging
 	z_index = 1 if dragging else 0 # render the dragged block on top of the other blocks
 
 
-# to drag
-func _on_Area2D_input_event(_viewport, event, _shape_idx):
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
-			emit_signal("onDragOrDrop")
+# to pick up
+func _on_Area2D_input_event(_viewport, _event, _shape_idx):
+	if Input.is_action_just_pressed("left_click") and not dragging:
+		# print("pick up blk")
+		onPickUp()
+		emit_signal("onDragOrDrop")
+		
+
+func onPickUp():
+	tween.interpolate_property(self, "scale", Vector2(1.2,1.2), Vector2(1,1), 1, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.start()
+
+
+func _on_mouse_entered() -> void:
+	if not dragging: changeAlpha(0.3)
+
+
+func _on_mouse_exited() -> void:
+	changeAlpha(1)
+
+
+func changeAlpha(newAlpha : float) -> void:
+	modulate.a = newAlpha
 
 
 # to drop
-func _unhandled_input(event : InputEvent) -> void:
-	if event is InputEventMouseButton and not event.is_pressed():
-		if event.button_index == BUTTON_LEFT and dragging:
-			emit_signal("onDragOrDrop")
-			if isInGridArea and numOfOverlappingIllegalAreas == 0: # successfully dropped block
-				prevPos = global_position
-				prevRotationInDegrees =  int(rotation_degrees) % 360
-				reparentIfNeeded()
-			elif isInSpeechBubble:
-				EventManager.emit_signal("droppedBlockIntoSpeechBubble", blockName)
-			else:
-				print("resetted")
-				reset()
-	elif event is InputEventKey and event.is_pressed():
-		if event.scancode == KEY_SPACE and dragging:
-			rotate(PI/2)
+func _unhandled_input(_event : InputEvent) -> void:
+	if Input.is_action_just_pressed("left_click") and dragging:
+		# print("drop blk")
+		onDrop()
+		emit_signal("onDragOrDrop")
+		if isInGridArea and numOfOverlappingIllegalAreas == 0: # successfully dropped block
+			prevPos = global_position
+			prevRotationInDegrees =  int(rotation_degrees) % 360
+			reparentIfNeeded()
+			AudioManager.playSfx("PlaceBlock")
+		else:
+			print("resetted")
+			reset()
+	if Input.is_action_just_pressed("right_click") and dragging:
+		rotation_degrees += 90
+		rotation_degrees = int(rotation_degrees) % 360 # need to see if this fixes the float bug in rotation
+		AudioManager.playSfx("RotateBlock")
+
+
+func onDrop() -> void:
+	scale = Vector2(1,1)
+	input_pickable = false
+	yield(get_tree().create_timer(0.3), "timeout")
+	input_pickable = true
 
 
 # when this happens, it means that something is in the way of the block	 
@@ -81,19 +111,6 @@ func _on_Area2D_area_exited(area : Area2D):
 		isInSpeechBubble = false
 
 
-func updateBlockStatus(updatedSpeechBubbleStatus : bool, _blockName : String):
-	if not isInSpeechBubble: return
-	if updatedSpeechBubbleStatus:
-		deleteBlock()
-	else:
-		reset()
-
-
-func deleteBlock() -> void:
-	if not isInSpeechBubble: return
-	queue_free()
-
-
 func reset():
 	toggleMonitoringAndMonitorable(false)
 	returnToPrevPositionAndRotation()
@@ -111,7 +128,7 @@ func toggleMonitoringAndMonitorable(toggleState : bool):
 
 func returnToPrevPositionAndRotation():
 	global_position = prevPos
-	global_rotation_degrees = prevRotationInDegrees
+	rotation_degrees = prevRotationInDegrees
 
 
 func setRefToHeldStocks(ref : Node):
@@ -128,3 +145,48 @@ func reparentIfNeeded():
 		refToHeldStocks.add_child(self)
 		self.global_position = tempGlobalPosition
 		EventManager.emit_signal("tookStock")
+
+
+func returnGlobalCoordsOfEachBox():
+	var res = []
+	for child in get_children():
+		if child is Sprite:
+			# when rotated, the components of global_position might be floats instead of ints
+			res.append(Vector2(round(child.global_position.x), round(child.global_position.y)))
+	return res
+
+
+func destroy() -> void:
+	var blkDestroyedVFX = blockDestroyedVFX.instance()
+	get_parent().add_child(blkDestroyedVFX)
+	blkDestroyedVFX.setColour(returnColorOfDestroyedBlk())
+	blkDestroyedVFX.global_position = global_position
+	queue_free()
+
+
+func returnColorOfDestroyedBlk() -> Color:
+	match blockName:
+		"IBlock":
+			print("IBlock color")
+			return Color("#6A4C93")
+		"JBlock":
+			print("JBlock color")
+			return Color("#1982C4")
+		"LBlock":
+			print("LBlock color")
+			return Color("#52A675")
+		"OBlock":
+			print("OBlock color")
+			return Color("#FFCA3A")
+		"SBlock":
+			print("SBlock color")
+			return Color("#287271")
+		"TBlock":
+			print("TBlock color")
+			return Color("#FF924C")
+		"ZBlock":
+			print("ZBlock color")
+			return Color("#FF595E")
+	return Color("#000000")
+
+	

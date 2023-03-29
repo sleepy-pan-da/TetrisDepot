@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ClearBlks1.wav-1bba5c62cbbeaa6996f5d03d735daf3b.sample"
+
+[deps]
+
+source_file="res://Assets/Sound/SFX/ClearBlks1.wav"
+dest_files=[ "res://.import/ClearBlks1.wav-1bba5c62cbbeaa6996f5d03d735daf3b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,179 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Shaders/CrtShader.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Game/Tutorial/TutorialStocksToTake.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game/GridSystem/GridSystem.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Game/Tutorial/Instructions.gd" type="Script" id=4]
+[ext_resource path="res://Game/SelectDraw.gd" type="Script" id=5]
+[ext_resource path="res://Game/Tutorial/TutorialManager.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Fonts/press_start/prstartk.ttf" type="DynamicFontData" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 9 )
+
+[node name="Tutorial" type="Node2D"]
+script = ExtResource( 6 )
+pathToMainMenu = "res://UI/MainMenu/MainMenu.tscn"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -2
+
+[node name="Background" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 1440, 810 )
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.2, 0.227451, 0.309804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Instructions" type="Control" parent="CanvasLayer2"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -512.0
+margin_top = 96.0
+margin_right = -32.0
+margin_bottom = 704.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+instructions = [ "LEFT CLICK TO PICK UP BLOCK.
+
+
+ONCE IT'S PICKED UP, IT FOLLOWS YOUR CURSOR.
+
+
+LEFT CLICK AGAIN TO PLACE IT.
+
+
+TRY PLACING BOTH BLOCKS TO THE GRID!", "BLOCKS THAT COME TOGETHER TO FORM A SELF-CONTAINED RECTANGLE CAN BE CLEARED AT ONCE.
+
+THE RECTANGLE CANNOT HAVE
+1. ANY EMPTY GRIDS
+2. BLOCKS THAT ARE NOT FULLY ENCLOSED WITHIN IT
+
+TRY CLEARING BOTH BLOCKS AT ONCE!
+
+
+
+
+LEFT CLICK TO PICK UP BLOCK (ONCE IT'S PICKED UP, IT FOLLOWS YOUR CURSOR)
+
+
+IF PICKED UP BLOCK,
+LEFT CLICK TO PLACE
+RIGHT CLICK TO ROTATE
+
+
+HOLD RIGHT CLICK & DRAG: CLEAR BLOCKS IN SELF-CONTAINED RECTANGLE", "NOICE! LET'S TRY OTHER BLOCKS NOW.
+
+
+LEFT CLICK TO PICK UP BLOCK (ONCE IT'S PICKED UP, IT FOLLOWS YOUR CURSOR)
+
+
+IF PICKED UP BLOCK,
+LEFT CLICK TO PLACE
+RIGHT CLICK TO ROTATE", "FIT THE BLOCKS INTO A SELF CONTAINED RECTANGLE TO CLEAR THEM.
+
+
+
+
+
+
+LEFT CLICK TO PICK UP BLOCK (ONCE IT'S PICKED UP, IT FOLLOWS YOUR CURSOR)
+
+
+IF PICKED UP BLOCK,
+LEFT CLICK TO PLACE
+RIGHT CLICK TO ROTATE
+
+
+HOLD RIGHT CLICK & DRAG: CLEAR BLOCKS IN SELF-CONTAINED RECTANGLE", "LET'S GOOOO! LET'S TRY THIS LAST BLOCK NOW.
+
+
+LEFT CLICK TO PICK UP BLOCK (ONCE IT'S PICKED UP, IT FOLLOWS YOUR CURSOR)
+
+
+IF PICKED UP BLOCK,
+LEFT CLICK TO PLACE
+RIGHT CLICK TO ROTATE", "SOME BLOCKS ARE BY THEMSELVES A RECTANGLE AND CAN BE CLEARED BY THEMSELVES!
+
+HOLD RIGHT CLICK & DRAG: CLEAR BLOCKS IN SELF-CONTAINED RECTANGLE", "WOOHOO!
+
+IN THE MAIN GAME MODE, YOU HAVE LIMITED NUMBER OF BLOCKS TO TAKE FROM THE LEFT.
+
+YOU LOSE WHEN YOU EITHER
+1. RUN OUT OF BLOCKS TO TAKE FROM THE LEFT
+2. RUN OUT OF SPACE TO PUT BLOCKS
+
+HOWEVER, IF THE BLOCKS ARE IN A SELF-CONTAINED RECTANGLE, THEY CAN BE CLEARED TO GIVE YOU MORE BLOCKS AND POINTS.
+THE BIGGER THE SELF-CONTAINED RECTANGLE, THE MORE BLOCKS AND POINTS YOU EARN!
+
+CAN YOU FILL THE WHOLE GRID WITH BLOCKS?!
+
+HAVE FUN!" ]
+
+[node name="Label" type="Label" parent="CanvasLayer2/Instructions"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 380, 0 )
+custom_fonts/font = SubResource( 1 )
+text = "LEFT CLICK & DRAG: MOVE BLOCK
+
+SPACE: ROTATE BLOCK
+
+RIGHT CLICK & DRAG: CLEAR BLOCKS"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EndButton" type="Button" parent="CanvasLayer2"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -480.0
+margin_top = -128.0
+margin_right = -52.0
+margin_bottom = -32.0
+custom_fonts/font = SubResource( 2 )
+text = "BACK HOME"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CrtShader" parent="CanvasLayer2" instance=ExtResource( 1 )]
+visible = false
+
+[node name="GridSystem" parent="." instance=ExtResource( 3 )]
+position = Vector2( 448, 64 )
+
+[node name="HeldStocks" type="Node2D" parent="."]
+
+[node name="TutorialStocksToTake" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, 64 )
+pathToHeldStocks = NodePath("../HeldStocks")
+
+[node name="SelectDraw" type="Node2D" parent="."]
+z_index = 1
+script = ExtResource( 5 )
+isTutorial = true
+
+[connection signal="pressed" from="CanvasLayer2/EndButton" to="." method="_on_Button_pressed"]
